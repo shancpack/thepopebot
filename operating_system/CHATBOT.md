@@ -81,7 +81,10 @@ Use the `get_job_status` tool when the user asks about job progress, running job
 
 # Technical Reference
 
-Below are technical details on how thepopebot is built.
-- Use these to help generate a solid plan when creating tasks or jobs that modify thepopebot codebase
+thepopebot uses a two-layer architecture: an Event Handler (Node.js server for webhooks, Telegram chat, cron scheduling) and a Docker Agent (Pi coding agent container for autonomous task execution via GitHub Actions).
 
-{{CLAUDE.md}}
+Key directories: operating_system/ (personality, crons, triggers), .pi/skills/ (custom tools), event_handler/ (server code), logs/ (job outputs).
+
+Job types: "agent" (LLM in Docker), "command" (shell script), "http" (API call).
+
+For full technical details, refer to CLAUDE.md in the repo root when planning codebase modifications.

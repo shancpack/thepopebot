@@ -7,17 +7,38 @@
     "enabled": false
   },
   {
-    "name": "daily-check",
-    "schedule": "0 9 * * *",
-    "type": "agent",
-    "job": "Check for dependency updates in package.json and report any outdated packages.",
-    "enabled": false
-  },
-  {
     "name": "ping",
     "schedule": "*/1 * * * *",
     "type": "command",
     "command": "echo \"pong!\"",
+    "enabled": true
+  },
+  {
+    "name": "daily-financial-research",
+    "schedule": "0 14 * * 1-5",
+    "type": "agent",
+    "job": "Read the file at operating_system/FINANCIAL_ADVISOR/FINANCIAL_ADVISOR.md and complete the tasks described there.",
+    "enabled": true
+  },
+  {
+    "name": "daily-ecommerce-report",
+    "schedule": "0 8 * * *",
+    "type": "agent",
+    "job": "Read the file at operating_system/ECOMMERCE/ECOMMERCE_MANAGER.md and complete the tasks described there. Pull data from both Amazon SP-API and Shopify Admin API, generate the daily report, and flag any alerts (low stock, unusual sales patterns, order issues).",
+    "enabled": true
+  },
+  {
+    "name": "inventory-check",
+    "schedule": "0 12,18 * * *",
+    "type": "agent",
+    "job": "Check inventory levels on both Amazon (using .pi/skills/amazon-api/amazon.js inventory) and Shopify (using .pi/skills/shopify-api/shopify.js inventory). If any SKU has fewer than 50 units available, create a detailed low-stock alert in operating_system/ECOMMERCE/DAILY_REPORT.md with the SKU, current quantity, and recommended reorder action.",
+    "enabled": true
+  },
+  {
+    "name": "weekly-sales-summary",
+    "schedule": "0 9 * * 1",
+    "type": "agent",
+    "job": "Generate a weekly sales summary comparing Amazon and Shopify performance for the past 7 days. Include total revenue, order count, average order value, top-selling SKUs, and week-over-week trends. Use the amazon-api and shopify-api skills. Save the report to operating_system/ECOMMERCE/WEEKLY_SUMMARY.md.",
     "enabled": true
   },
   {
@@ -26,29 +47,5 @@
     "type": "command",
     "command": "ls -la logs/",
     "enabled": false
-  },
-  {
-    "name": "ping-status",
-    "schedule": "*/5 * * * *",
-    "type": "http",
-    "url": "https://example.com/status",
-    "method": "POST",
-    "vars": { "source": "heartbeat" },
-    "enabled": false
-  },
-  {
-    "name": "health-check",
-    "schedule": "*/10 * * * *",
-    "type": "http",
-    "url": "https://example.com/health",
-    "method": "GET",
-    "enabled": false
-  },
-  {
-    "name": "daily-financial-research",
-    "schedule": "0 14 * * 1-5",
-    "type": "agent",
-    "job": "Read the file at operating_system/FINANCIAL_ADVISOR/FINANCIAL_ADVISOR.md and complete the tasks described there.",
-    "enabled": true
   }
 ]

@@ -22,12 +22,22 @@ function getApiKey() {
 }
 
 /**
- * Call Claude API
+ * Sleep for a given number of milliseconds
+ * @param {number} ms - Milliseconds to sleep
+ * @returns {Promise<void>}
+ */
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+/**
+ * Call Claude API with retry logic for rate limits
  * @param {Array} messages - Conversation messages
  * @param {Array} tools - Tool definitions
+ * @param {number} retries - Number of retries remaining (default: 3)
  * @returns {Promise<Object>} API response
  */
-async function callClaude(messages, tools) {
+async function callClaude(messages, tools, retries = 3) {
   const apiKey = getApiKey();
   const model = process.env.EVENT_HANDLER_MODEL || DEFAULT_MODEL;
   const systemPrompt = render_md(path.join(__dirname, '..', '..', 'operating_system', 'CHATBOT.md'));
@@ -51,6 +61,15 @@ async function callClaude(messages, tools) {
       tools: allTools,
     }),
   });
+
+  // Handle rate limits with retry + backoff
+  if (response.status === 429 && retries > 0) {
+    const retryAfter = response.headers.get('retry-after');
+    const waitMs = retryAfter ? parseInt(retryAfter, 10) * 1000 : (4 - retries) * 30000; // 30s, 60s, 90s
+    console.log(`[Claude] Rate limited. Waiting ${waitMs / 1000}s before retry (${retries} retries left)...`);
+    await sleep(waitMs);
+    return callClaude(messages, tools, retries - 1);
+  }
 
   if (!response.ok) {
     const error = await response.text();
