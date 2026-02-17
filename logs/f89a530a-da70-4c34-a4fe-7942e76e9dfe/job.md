@@ -1,0 +1,1 @@
+Check inventory levels on both Amazon (using .pi/skills/amazon-api/amazon.js inventory) and Shopify (using .pi/skills/shopify-api/shopify.js inventory). If any SKU has fewer than 50 units available, create a detailed low-stock alert in operating_system/ECOMMERCE/DAILY_REPORT.md with the SKU, current quantity, and recommended reorder action.
