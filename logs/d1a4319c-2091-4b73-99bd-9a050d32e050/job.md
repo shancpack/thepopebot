@@ -1,0 +1,1 @@
+Read the file at operating_system/ECOMMERCE/ECOMMERCE_MANAGER.md and complete the tasks described there. Pull data from both Amazon SP-API and Shopify Admin API, generate the daily report, and flag any alerts (low stock, unusual sales patterns, order issues).
